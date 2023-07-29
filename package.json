@@ -1,0 +1,18 @@
+{
+  "name": "ws-socket",
+  "version": "1.0.0",
+  "description": "to learn ws socket basics",
+  "main": "index.js",
+  "scripts": {
+    "test": "abc"
+  },
+  "keywords": [
+    "ws"
+  ],
+  "author": "akash",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "socket.io": "^4.7.1"
+  }
+}

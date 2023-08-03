@@ -1,20 +1,31 @@
-const express = require('express');
-const app = express();
-const http = require('http');
-const server = http.createServer(app);
-const { Server } = require("socket.io");
-const io = new Server(server);
+const app = require("express")();
+const path = require("path");
+const http = require("http").Server(app);
+const PORT = 3000;
+const io = require("socket.io")(http);
 
-app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/index.html');
-});
-
-io.on('connection', (socket) => {
-  socket.on('chat message', (msg) => {
-    io.emit('chat message', msg);
-  });
-});
-
-server.listen(3000, () => {
-  console.log('listening on *:3000');
-});
+app.get("/", (req, resp) => { 
+  const options = {
+    root: path.join(__dirname)
+  }
+  resp.sendFile("index.html",options);
+})
+var room = io.of("/room");
+var room2 = io.of("/room-2");
+room.on("connection", (socket) => {
+  console.log("user connected");
+  room.emit("room-event","welcome to my room 1");
+  socket.on("disconnect", () => {
+    console.log("user is disconnected");  
+  })
+})
+room2.on("connection", (socket) => {
+  console.log("user connected");
+  room2.emit("room-event-2","welcome to my room 2");
+  socket.on("disconnect", () => {
+    console.log("user is disconnected");  
+  })
+})
+http.listen(PORT, () => { 
+  console.log(`Server running on PORT : ${PORT}`);
+})
